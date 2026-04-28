@@ -1,0 +1,24 @@
+.message {
+  display: flex;
+  gap: 10px;
+}
+.message__body {
+  display: flex;
+  flex-direction: column;
+}
+.message__meta {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+.message__author {
+  font-size: 14px;
+}
+.message__time {
+  font-size: 11px;
+  color: #888;
+}
+.message__text {
+  font-size: 14px;
+  margin-top: 2px;
+}

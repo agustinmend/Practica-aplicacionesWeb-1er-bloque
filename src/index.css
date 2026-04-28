@@ -1,0 +1,271 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: #1d1c1d;
+  background: #fff;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 64px 260px 1fr 240px;
+  height: 100vh;
+}
+
+.workspace-bar {
+  background: #19171d;
+  padding: 12px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.workspace-bar__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: #4a154b;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  cursor: pointer;
+}
+.workspace-bar__icon--active {
+  outline: 2px solid #fff;
+}
+.workspace-bar__icon--plus {
+  background: #3f0e40;
+  color: #d1d2d3;
+}
+
+.sidebar {
+  background: #3f0e40;
+  color: #d1d2d3;
+  padding: 8px 0;
+  overflow-y: auto;
+}
+.sidebar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  border-bottom: 1px solid #522653;
+}
+.sidebar__title {
+  color: #fff;
+  font-size: 15px;
+}
+.sidebar__btn {
+  background: #fff;
+  color: #3f0e40;
+  border: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+}
+.sidebar__section {
+  padding: 12px 8px;
+}
+.sidebar__section-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #bcabbc;
+  padding: 4px 8px;
+  letter-spacing: 0.5px;
+}
+
+.channel-list {
+  list-style: none;
+}
+.channel-list__item {
+  padding: 6px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.channel-list__item:hover {
+  background: #350d36;
+}
+.channel-list__item--active {
+  background: #1164a3;
+  color: #fff;
+}
+.channel-list__hash {
+  opacity: 0.7;
+}
+.channel-list__badge {
+  margin-left: auto;
+  background: #cd2553;
+  color: #fff;
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+
+.dm-list {
+  list-style: none;
+}
+.dm-list__item {
+  padding: 6px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.dm-list__item:hover {
+  background: #350d36;
+}
+.dm-list__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dm-list__dot--online {
+  background: #2bac76;
+}
+.dm-list__dot--away {
+  background: #ecb22e;
+}
+.dm-list__dot--offline {
+  background: #888;
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-left: 1px solid #e1e1e1;
+  border-right: 1px solid #e1e1e1;
+}
+.chat__header {
+  padding: 12px 20px;
+  border-bottom: 1px solid #e1e1e1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.chat__title {
+  font-size: 18px;
+}
+.chat__topic {
+  font-size: 13px;
+  color: #696969;
+}
+.chat__member-count {
+  font-size: 13px;
+  color: #696969;
+}
+.chat__messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.message {
+  display: flex;
+  gap: 10px;
+}
+.message__body {
+  display: flex;
+  flex-direction: column;
+}
+.message__meta {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+.message__author {
+  font-size: 14px;
+}
+.message__time {
+  font-size: 11px;
+  color: #888;
+}
+.message__text {
+  font-size: 14px;
+  margin-top: 2px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  background: #4a154b;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.avatar--small {
+  width: 24px;
+  height: 24px;
+  font-size: 11px;
+}
+
+.composer {
+  padding: 12px 20px;
+  border-top: 1px solid #e1e1e1;
+  display: flex;
+  gap: 8px;
+}
+.composer__input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #cfcfcf;
+  border-radius: 6px;
+  font-size: 14px;
+}
+.composer__btn {
+  background: #007a5a;
+  color: #fff;
+  border: 0;
+  padding: 0 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.members-panel {
+  background: #f8f8f8;
+  padding: 16px;
+  overflow-y: auto;
+}
+.members-panel__title {
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+.members-panel__list {
+  list-style: none;
+}
+.members-panel__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  font-size: 13px;
+}
+.members-panel__name {
+  color: #1d1c1d;
+}

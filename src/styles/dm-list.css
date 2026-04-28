@@ -1,0 +1,30 @@
+.dm-list {
+  list-style: none;
+}
+.dm-list__item {
+  padding: 6px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.dm-list__item:hover {
+  background: #350d36;
+}
+.dm-list__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dm-list__dot--online {
+  background: #2bac76;
+}
+.dm-list__dot--away {
+  background: #ecb22e;
+}
+.dm-list__dot--offline {
+  background: #888;
+}

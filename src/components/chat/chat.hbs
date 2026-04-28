@@ -1,0 +1,34 @@
+<header class="chat__header">
+  <div class="chat__header-left">
+    <h2 class="chat__title"># <span id="current-channel-name">{{channelName}}</span></h2>
+    <p class="chat__topic" id="current-channel-topic">{{channelTopic}}</p>
+  </div>
+  <div class="chat__header-right">
+    <span class="chat__member-count" id="member-count">{{memberCount}} miembros</span>
+  </div>
+</header>
+
+<section class="chat__messages" id="messages">
+  {{#each messages}}
+  <div class="message">
+    <div class="avatar">{{authorAvatar}}</div>
+    <div class="message__body">
+      <div class="message__meta">
+        <strong class="message__author">{{authorName}}</strong>
+        <span class="message__time">{{time}}</span>
+      </div>
+      <p class="message__text">{{text}}</p>
+    </div>
+  </div>
+  {{/each}}
+</section>
+
+<footer class="composer">
+  <input
+    type="text"
+    id="composer-input"
+    class="composer__input"
+    placeholder="Escribe un mensaje en #{{channelName}}"
+  />
+  <button id="composer-send" class="composer__btn">Enviar</button>
+</footer>

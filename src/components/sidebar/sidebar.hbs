@@ -1,0 +1,19 @@
+<header class="sidebar__header">
+  <h1 class="sidebar__title">UCB Web 233</h1>
+  <button class="sidebar__btn" title="Nuevo mensaje">✎</button>
+</header>
+
+<section class="sidebar__section">
+  <h2 class="sidebar__section-title">Canales</h2>
+  <ul class="channel-list" id="channel-list">
+    {{#each channels}}
+    <li class="channel-list__item {{#if isActive}}channel-list__item--active{{/if}}" data-channel-id="{{id}}">
+      <span class="channel-list__hash">#</span>
+      <span class="channel-list__name">{{name}}</span>
+      {{#if unread}}
+      <span class="channel-list__badge">{{unread}}</span>
+      {{/if}}
+    </li>
+    {{/each}}
+  </ul>
+</section>

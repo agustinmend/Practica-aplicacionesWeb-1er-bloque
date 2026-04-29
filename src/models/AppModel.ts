@@ -1,11 +1,12 @@
-import { AppData} from '../types/AppData';
+import { Observer } from '../utils/observer';
+import { createReactiveState } from '../utils/createReactiveState';
+import { AppData } from '../types/AppData';
 import { Channel } from '../types/channel';
 import { User } from '../types/user';
-
-type Subscriber = () => void;
+import { Message } from '../types/message';
 
 export class AppModel {
-  private subscribers: Subscriber[] = [];
+  public observer: Observer = new Observer();
   
   private state: { data: AppData; currentChannelId: string };
 
@@ -15,36 +16,9 @@ export class AppModel {
       currentChannelId: "c-general"
     };
 
-    this.state = this.createReactiveProxy(rawState);
-  }
-
-  subscribe(callback: Subscriber): void {
-    this.subscribers.push(callback);
-  }
-
-  private notify(): void {
-    this.subscribers.forEach(callback => callback());
-  }
-  
-  private createReactiveProxy<T extends object>(target: T): T {
-    const handler: ProxyHandler<any> = {
-      get: (obj, prop) => {
-        const val = Reflect.get(obj, prop);
-        if (typeof val === 'object' && val !== null) {
-          return new Proxy(val, handler);
-        }
-        return val;
-      },
-      set: (obj, prop, value) => {
-        const result = Reflect.set(obj, prop, value);
-        if (prop !== 'length') {
-          this.notify();
-        }
-         return result;
-      }
-    };
-
-    return new Proxy(target, handler);
+    this.state = createReactiveState(rawState, () => {
+      this.observer.notify(this.state);
+    });
   }
 
   getChannels(): Channel[] {
@@ -69,12 +43,26 @@ export class AppModel {
   }
 
   addMessageToCurrentChannel(text: string): void {
-    const channel = this.getCurrentChannel();
-    channel.messages.push({
+    const newMessage: Message = {
       id: "m-" + Date.now().toString(),
       authorId: this.state.data.currentUser.id,
       text: text,
       time: new Date().toTimeString().slice(0, 5),
+    };
+
+    const updatedChannels = this.state.data.channels.map(channel => {
+      if (channel.id === this.state.currentChannelId) {
+        return { 
+          ...channel, 
+          messages: [...channel.messages, newMessage] 
+        };
+      }
+      return channel;
     });
+
+    this.state.data = {
+      ...this.state.data,
+      channels: updatedChannels
+    };
   }
 }

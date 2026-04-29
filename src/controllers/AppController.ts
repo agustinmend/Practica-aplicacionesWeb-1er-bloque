@@ -31,7 +31,7 @@ export class AppController {
       this.model.addMessageToCurrentChannel(text);
     });
 
-    this.model.subscribe(() => {
+    this.model.observer.subscribe(() => {
       this.updateAllViews();
     });
 

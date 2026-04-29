@@ -10,16 +10,7 @@
 
 <section class="chat__messages" id="messages">
   {{#each messages}}
-  <div class="message">
-    <div class="avatar">{{authorAvatar}}</div>
-    <div class="message__body">
-      <div class="message__meta">
-        <strong class="message__author">{{authorName}}</strong>
-        <span class="message__time">{{time}}</span>
-      </div>
-      <p class="message__text">{{text}}</p>
-    </div>
-  </div>
+    {{> message this}}
   {{/each}}
 </section>
 

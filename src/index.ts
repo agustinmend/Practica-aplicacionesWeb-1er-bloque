@@ -12,7 +12,10 @@ import { loadData } from './api';
 import { AppModel } from './models/AppModel';
 import { AppController } from './controllers/AppController';
 import { AppData } from './types/AppData';
+import Handlebars from 'handlebars';
+import messagePartial from './components/chat/message.hbs?raw';
 
+Handlebars.registerPartial('message', messagePartial);
 async function bootstrap() {
   try {
     const data: AppData = await loadData();

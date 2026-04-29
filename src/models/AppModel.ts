@@ -40,7 +40,7 @@ export class AppModel {
         if (prop !== 'length') {
           this.notify();
         }
-        return result;
+         return result;
       }
     };
 

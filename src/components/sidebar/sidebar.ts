@@ -2,10 +2,10 @@ import template from './sidebar.hbs?raw';
 import Handlebars from 'handlebars';
 import { Channel } from '../../types/channel';
 
-export interface SidebarState {
-  channels: (Channel & { isActive: boolean })[];
+interface ChannelViewModel {
+  channel : Channel;
+  isActive : boolean;
 }
-
 export class SidebarComponent {
   private container: HTMLElement;
   private compiledTemplate: HandlebarsTemplateDelegate;
@@ -24,7 +24,7 @@ export class SidebarComponent {
       
       if (li) {
         const id = li.getAttribute('data-channel-id');
-        if (id !== undefined && id !== "") {
+        if (id && id !== "") {
            this.onChannelClickHandler(id as string);
         }
       }
@@ -35,7 +35,7 @@ export class SidebarComponent {
     this.onChannelClickHandler = handler;
   }
 
-  render(state: SidebarState): void {
+  render(state: ChannelViewModel): void {
     this.container.innerHTML = this.compiledTemplate(state);
   }
 }

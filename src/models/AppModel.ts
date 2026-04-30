@@ -61,10 +61,29 @@ export class AppModel {
       channels: updatedChannels
     };
   }
+  
   createMemento(): AppMemento {
     return new AppMemento(this.state.data);
   }
+  
   restoreMemento(memento: AppMemento): void {
     this.state.data = memento.getstate();
+  }
+
+  editMessage(messageId: string, newText: string): void {
+    const updatedChannels = this.state.data.channels.map(channel => {
+      if (channel.id === this.state.currentChannelId) {
+        const updatedMessages = channel.messages.map(m => 
+          m.id === messageId ? { ...m, text: newText } : m
+        );
+        return { ...channel, messages: updatedMessages };
+      }
+      return channel;
+    });
+
+    this.state.data = {
+      ...this.state.data,
+      channels: updatedChannels
+    };
   }
 }

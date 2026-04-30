@@ -2,6 +2,7 @@ import template from './chat.hbs?raw';
 import Handlebars from 'handlebars';
 
 export interface MessageView {
+  id: string;
   authorName: string;
   authorAvatar: string;
   time: string;
@@ -17,55 +18,92 @@ export interface ChatState {
 
 export class ChatComponent {
   private container: HTMLElement;
+  private observer: MutationObserver;
   private compiledTemplate: HandlebarsTemplateDelegate;
-  
-  private onSendMessageHandler: (text: string) => void = () => {};
+
+  private onSendMessage: (text: string) => void = () => {};
+  private onEditMessage: (id: string, text: string) => void = () => {};
 
   constructor(containerId: string) {
     const el = document.getElementById(containerId);
     if (!el) throw new Error(`Contenedor ${containerId} ausente.`);
+    
     this.container = el;
     this.compiledTemplate = Handlebars.compile(template);
 
+    this.observer = new MutationObserver(this.handleMutations.bind(this));
+
+    this.setupEventListeners();
+  }
+
+  setOnSendMessage(handler: (text: string) => void): void { this.onSendMessage = handler; }
+  setOnEditMessage(handler: (id: string, text: string) => void): void { this.onEditMessage = handler; }
+
+  private setupEventListeners(): void {
     this.container.addEventListener('click', (e: Event) => {
-      const target = e.target as HTMLElement;
-      if (target.id === 'composer-send') {
-        this.extractAndSendMessage();
-      }
+      if ((e.target as HTMLElement).id === 'composer-send') this.send();
     });
 
     this.container.addEventListener('keydown', (e: KeyboardEvent) => {
       const target = e.target as HTMLElement;
+      
       if (target.id === 'composer-input' && e.key === 'Enter') {
-        this.extractAndSendMessage();
+        this.send();
+      }
+      
+      if (target.hasAttribute('contenteditable') && e.key === 'Enter') {
+        e.preventDefault();
+        target.blur();
+      }
+    });
+
+    this.container.addEventListener('dblclick', (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.classList.contains('message__text')) {
+        target.setAttribute('contenteditable', 'true');
+        target.focus();
       }
     });
   }
 
-  setOnSendMessage(handler: (text: string) => void): void {
-    this.onSendMessageHandler = handler;
+  private send(): void {
+    const input = this.container.querySelector('#composer-input') as HTMLInputElement;
+    const text = input?.value.trim();
+    if (text) {
+      this.onSendMessage(text);
+      if (input) input.value = ""; 
+    }
   }
 
-  private extractAndSendMessage(): void {
-    const input = this.container.querySelector('#composer-input') as HTMLInputElement | undefined;
-    if (!input) return;
+  private handleMutations(mutations: MutationRecord[]): void {
+    for (const mutation of mutations) {
+      if (mutation.type !== 'characterData' && mutation.type !== 'childList') continue;
 
-    const text = input.value.trim();
-    if (text !== "") {
-      this.onSendMessageHandler(text);
-      input.value = ""; 
+      const node = mutation.target.nodeType === Node.TEXT_NODE ? mutation.target.parentElement : mutation.target;
+      const target = node as HTMLElement;
+
+      if (target?.classList.contains('message__text') && target.getAttribute('contenteditable') === 'true') {
+        const id = target.getAttribute('data-message-id');
+        const newText = target.textContent?.trim();
+        
+        if (id && newText) {
+          this.onEditMessage(id, newText);
+        }
+      }
     }
   }
 
   render(state: ChatState): void {
+    this.observer.disconnect();
+
     this.container.innerHTML = this.compiledTemplate(state);
     this.scrollToBottom();
+
+    this.observer.observe(this.container, { characterData: true, childList: true, subtree: true });
   }
 
   private scrollToBottom(): void {
-    const messagesSection = this.container.querySelector('#messages');
-    if (messagesSection) {
-      messagesSection.scrollTop = messagesSection.scrollHeight;
-    }
+    const section = this.container.querySelector('#messages');
+    if (section) section.scrollTop = section.scrollHeight;
   }
 }

@@ -6,6 +6,7 @@ import { ChatComponent } from '../components/chat/chat';
 import { MembersComponent } from '../components/members/members';
 import { Executor } from '../utils/executor';
 import { SendMessageCommand } from '../utils/sendMessageCommand';
+import { EditMessageCommand } from '../utils/editMessageCommand';
 
 export class AppController {
   private model: AppModel;
@@ -31,6 +32,11 @@ export class AppController {
 
     this.chat.setOnSendMessage((text: string) => {
       const command = new SendMessageCommand(this.model, text);
+      this.executor.execute(command);
+    });
+
+    this.chat.setOnEditMessage((messageId: string, text: string) => {
+      const command = new EditMessageCommand(this.model, messageId, text);
       this.executor.execute(command);
     });
 
@@ -79,6 +85,7 @@ export class AppController {
       const author = users.find(u => u.id === m.authorId);
       if (!author) throw new Error(`Usuario ${m.authorId} no encontrado`);
       return {
+        id: m.id,
         authorName: author.name,
         authorAvatar: author.avatar,
         time: m.time,

@@ -4,18 +4,20 @@ import { LayoutComponent } from '../components/layout/layout';
 import { SidebarComponent } from '../components/sidebar/sidebar';
 import { ChatComponent } from '../components/chat/chat';
 import { MembersComponent } from '../components/members/members';
+import { CommandManager } from '../utils/commandManager';
+import { SendMessageCommand } from '../utils/sendMessageCommand';
 
 export class AppController {
   private model: AppModel;
   private router: Router;
-  
+  private commandManager: CommandManager;
   private sidebar: SidebarComponent;
   private chat: ChatComponent;
   private members: MembersComponent;
 
   constructor(model: AppModel) {
     this.model = model;
-
+    this.commandManager = new CommandManager();
     const layout = new LayoutComponent('app-root');
     layout.render();
 
@@ -28,7 +30,8 @@ export class AppController {
     });
 
     this.chat.setOnSendMessage((text: string) => {
-      this.model.addMessageToCurrentChannel(text);
+      const command = new SendMessageCommand(this.model, text);
+      this.commandManager.executeCommand(command);
     });
 
     this.model.observer.subscribe(() => {
@@ -45,6 +48,12 @@ export class AppController {
     });
 
     this.router.handleCurrentRoute();
+    document.addEventListener("keydown", (e : KeyboardEvent) => {
+      if (e.ctrlKey && e.key === 'z') {
+        e.preventDefault();
+        this.commandManager.undoLats();
+      }
+    });
   }
 
   private updateAllViews(): void {
@@ -97,4 +106,5 @@ export class AppController {
 
     this.members.render({ members: membersData });
   }
+  
 }

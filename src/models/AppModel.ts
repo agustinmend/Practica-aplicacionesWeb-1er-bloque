@@ -4,6 +4,7 @@ import { AppData } from '../types/AppData';
 import { Channel } from '../types/channel';
 import { User } from '../types/user';
 import { Message } from '../types/message';
+import { AppMemento } from '../utils/appMemento';
 
 export class AppModel {
   public observer: Observer = new Observer();
@@ -64,5 +65,11 @@ export class AppModel {
       ...this.state.data,
       channels: updatedChannels
     };
+  }
+  createMemento(): AppMemento {
+    return new AppMemento(this.state.data);
+  }
+  restoreMemento(memento: AppMemento): void {
+    this.state.data = memento.getstate();
   }
 }

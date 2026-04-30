@@ -1,7 +1,7 @@
 /**
  * Patrón: Factory
- * Problema que resuelve: El modelo de dominio (AppModel) construye los mensajes manualmente, acoplándose a la lógica de generación de IDs y formato de fechas de la infraestructura.
- * Implementación: La clase MessageFactory centraliza y encapsula la creación de los mensajes a través del método estático create().
+ * Problema que resuelve: El modelo construye los mensajes manualmente, acoplandose a la logica de generacion de IDs y formato de fechas de la infraestructura.
+ * Implementación: La clase MessageFactory centraliza y encapsula la creacion de los mensajes a traves del metodo estatico create().
  */
 export class MessageFactory {
   static create(text: string, authorId: string) {

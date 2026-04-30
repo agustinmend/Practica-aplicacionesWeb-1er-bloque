@@ -1,20 +1,6 @@
 import template from './chat.hbs?raw';
 import Handlebars from 'handlebars';
-
-export interface MessageView {
-  id: string;
-  authorName: string;
-  authorAvatar: string;
-  time: string;
-  text: string;
-}
-
-export interface ChatState {
-  channelName: string;
-  channelTopic: string;
-  memberCount: number;
-  messages: MessageView[];
-}
+import { ChatState } from '../../types/views';
 
 export class ChatComponent {
   private container: HTMLElement;

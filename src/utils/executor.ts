@@ -2,11 +2,10 @@ export interface Command {
   execute(): void;
   undo(): void;
 }
-
 /**
  * Patrón: Memento
- * Problema que resuelve: Imposibilidad de mantener un registro ordenado de las acciones del usuario para revertir estados (Undo).
- * Implementación: La clase History encapsula la pila de comandos y mementos exponiendo métodos estrictos push() y pop().
+ * Problema que resuelve: Imposibilidad de revertir el estado de la aplicación a un punto anterior
+ * Implementación: La clase AppMemento almacena un snapshot inmutable de AppData. AppModel actúa como Originator y SendMessageCommand actúa como el Caretaker que guarda este snapshot antes de mutar el modelo.
  */
 export class History {
   private commands: Command[] = [];
@@ -23,7 +22,7 @@ export class History {
 /**
  * Patrón: Command
  * Problema que resuelve: El controlador ejecuta mutaciones directas y rígidas sobre el modelo.
- * Implementación: La clase Executor actúa como el Invoker central. Recibe objetos Command y ejecuta su método execute().
+ * Implementación: La clase Executor actua como el Invoker central. Recibe objetos Command y ejecuta su metodo execute().
  */
 export class Executor {
   private history = new History();

@@ -1,7 +1,7 @@
 /**
  * Patrón: Memento
- * Problema que resuelve: Imposibilidad de revertir el estado de la aplicación a un punto anterior sin romper la encapsulación del modelo. Actualmente, si el usuario comete un error (ej. enviar un mensaje equivocado), no hay forma de restaurar el estado previo sin escribir lógica espagueti en el controlador para buscar y eliminar el mensaje manualmente.
- * Implementación: La clase AppMemento almacena un snapshot inmutable (clon profundo) de AppData. AppModel actúa como Originator y SendMessageCommand actúa como el Caretaker que guarda este snapshot antes de mutar el modelo.
+ * Problema que resuelve: Imposibilidad de revertir el estado de la aplicación a un punto anterior
+ * Implementación: La clase AppMemento almacena un snapshot inmutable de AppData. AppModel actúa como Originator y SendMessageCommand actúa como el Caretaker que guarda este snapshot antes de mutar el modelo.
  */
 import { AppData } from '../types/AppData';
 

@@ -4,20 +4,20 @@ import { LayoutComponent } from '../components/layout/layout';
 import { SidebarComponent } from '../components/sidebar/sidebar';
 import { ChatComponent } from '../components/chat/chat';
 import { MembersComponent } from '../components/members/members';
-import { CommandManager } from '../utils/commandManager';
+import { Executor } from '../utils/executor';
 import { SendMessageCommand } from '../utils/sendMessageCommand';
 
 export class AppController {
   private model: AppModel;
   private router: Router;
-  private commandManager: CommandManager;
+  private executor : Executor;
   private sidebar: SidebarComponent;
   private chat: ChatComponent;
   private members: MembersComponent;
 
   constructor(model: AppModel) {
     this.model = model;
-    this.commandManager = new CommandManager();
+    this.executor = new Executor();
     const layout = new LayoutComponent('app-root');
     layout.render();
 
@@ -31,7 +31,7 @@ export class AppController {
 
     this.chat.setOnSendMessage((text: string) => {
       const command = new SendMessageCommand(this.model, text);
-      this.commandManager.executeCommand(command);
+      this.executor.execute(command);
     });
 
     this.model.observer.subscribe(() => {
@@ -51,7 +51,7 @@ export class AppController {
     document.addEventListener("keydown", (e : KeyboardEvent) => {
       if (e.ctrlKey && e.key === 'z') {
         e.preventDefault();
-        this.commandManager.undoLats();
+        this.executor.undoLast();
       }
     });
   }

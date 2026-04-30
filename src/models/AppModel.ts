@@ -3,8 +3,8 @@ import { createReactiveState } from '../utils/createReactiveState';
 import { AppData } from '../types/AppData';
 import { Channel } from '../types/channel';
 import { User } from '../types/user';
-import { Message } from '../types/message';
 import { AppMemento } from '../utils/appMemento';
+import { MessageFactory } from '../utils/messageFactory';
 
 export class AppModel {
   public observer: Observer = new Observer();
@@ -44,12 +44,7 @@ export class AppModel {
   }
 
   addMessageToCurrentChannel(text: string): void {
-    const newMessage: Message = {
-      id: "m-" + Date.now().toString(),
-      authorId: this.state.data.currentUser.id,
-      text: text,
-      time: new Date().toTimeString().slice(0, 5),
-    };
+    const newMessage = MessageFactory.create(text, this.state.data.currentUser.id);
 
     const updatedChannels = this.state.data.channels.map(channel => {
       if (channel.id === this.state.currentChannelId) {

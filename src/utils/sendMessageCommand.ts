@@ -5,7 +5,7 @@
  */
 import { AppModel } from '../models/AppModel';
 import { AppMemento } from './appMemento';
-import { Command } from './command';
+import { Command } from './executor';
 export class SendMessageCommand implements Command {
     private model: AppModel;
     private text: string;
